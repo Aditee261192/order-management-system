@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: Order Management API
+  version: 1.0.0
+paths:
+  /api/v1/customer-orders:
+    post:
+      summary: Creates an order.
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/creteOrderRequest'
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/creteOrderResponse'
+        '400':
+          description: invalid input
+        '500':
+          description: Unhandled error by server
+
+
+  /api/v1/conversion-rates:
+    get:
+      summary: Get list of all available conversion rates
+      operationId: getConversionRates
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                items:
+                  $ref: '#/components/schemas/CurrencyConversionRateResponse'
+        '404':
+          description: not found
+        '500':
+          description: Unhandled error by server
+
+  /api/v1/conversion-rates/date/{date}:
+    get:
+      summary: Get list of all available conversion rates for given date.
+      operationId: getConversionRatesByDate
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2026-01-22"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                items:
+                  $ref: '#/components/schemas/CurrencyConversionRateResponse'
+        '404':
+          description: not found
+        '500':
+          description: Unhandled error by server
+
+components:
+  schemas:
+    creteOrderRequest:
+      type: object
+      description: contains currency exchange rate details
+      properties:
+        id:
+          type: string
+          example: '40b044b9-01c8-4e5f-a484-8fbe3fe351de'
+        category:
+          type: string
+          example: 'B2C'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        site:
+          $ref: '#/components/schemas/Site'
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2026-05-13T10:15:30+02:00'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2026-05-17T10:15:30+02:00'
+
+    Customer:
+      type: object
+      description: contains customer details
+      properties:
+        id:
+          type: string
+          example: 'CUST-100'
+
+    Site:
+      type: object
+      description: contains site details
+      properties:
+        id:
+          type: string
+          example: 'SITE-502'
+
+    OrderItem:
+      type: object
+      properties:
+        productOfferingId:
+          type: string
+          example: 'PROD-30001'
+
+        quantity:
+          type: integer
+          example: 2
+
+    PaymentMethod:
+      type: object
+      properties:
+        type:
+          type: string
+          example: 'DIRECT_DEBIT'
+
+        iban:
+          type: string
+          description: Required if payment type is DIRECT_DEBIT
+          example: 'DE89370400440532013000'
