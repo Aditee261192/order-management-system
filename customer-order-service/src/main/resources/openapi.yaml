@@ -135,7 +135,6 @@ components:
         type:
           type: string
           example: 'DIRECT_DEBIT'
-
         iban:
           type: string
           description: Required if payment type is DIRECT_DEBIT
