@@ -9,8 +9,10 @@ import lombok.NoArgsConstructor;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,9 +24,9 @@ import java.util.List;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
-    private String orderId;
+    private String id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
@@ -51,27 +53,21 @@ public class Order {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems;
+    private List<OrderItem> orderItems = new ArrayList<>();;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private PaymentMethod paymentMethod;
 
-    /*public class CreateOrderRequest {
+    public void addOrderItem(OrderItem item) {
+        orderItems.add(item);
+        item.setOrder(this);
+    }
 
-    @NotNull
-    private Category category;
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+        paymentMethod.setOrder(this);
+    }
 
-    @NotBlank
-    private String customerId;
 
-    @NotBlank
-    private String siteId;
-
-    @NotEmpty
-    private List<OrderItemRequest> orderItems;
-
-    @NotNull
-    private PaymentMethodType paymentMethodType;
-}*/
 
 }
