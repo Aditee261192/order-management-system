@@ -1,0 +1,99 @@
+openapi: 3.0.3
+info:
+  title: Order Management API
+  version: 1.0.0
+paths:
+  /api/v1/product-offerings:
+    post:
+      summary: Creates product offering.
+      operationId: createProductOffering
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createProductOfferingRequest'
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductOfferingResponse'
+        '400':
+          description: invalid input
+        '500':
+          description: Unhandled error by server
+
+    get:
+      summary: Get list of all available product offerings.
+      operationId: getAvailableProductOfferings
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                items:
+                  $ref: '#/components/schemas/ProductOfferingResponse'
+        '404':
+          description: Not found.
+        '500':
+          description: Unhandled error by server
+
+  /api/v1/product-offerings/{id}:
+    get:
+      summary: Get product offering by id .
+      operationId: getProductOfferingById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "PO1"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/ProductOfferingResponse'
+        '404':
+          description: Not found
+        '500':
+          description: Unhandled error by server
+
+components:
+  schemas:
+    createProductOfferingRequest:
+      type: object
+      description: contains product offering request details.
+      properties:
+        name:
+          type: string
+          example: 'Discount'
+        price:
+          type: number
+          format: double
+          example : 22.00
+      required:
+        - name
+        - price
+
+    ProductOfferingResponse:
+      type: object
+      description: contains product offering request details.
+      properties:
+        id:
+          type: string
+          example: 'PO1'
+        name:
+          type: string
+          example: 'Discount'
+        price:
+          type: number
+          format: double
+          example: 22.00
+
