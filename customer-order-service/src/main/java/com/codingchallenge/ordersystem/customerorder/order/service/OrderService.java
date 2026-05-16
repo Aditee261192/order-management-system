@@ -6,4 +6,6 @@ import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderRes
 public interface OrderService {
 
     OrderResponse createOrder(CreateOrderRequest request, String idempotencyKey);
+
+    OrderResponse getOrderById(String orderID);
 }

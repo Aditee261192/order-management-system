@@ -18,15 +18,38 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/creteOrderResponse'
+                $ref: '#/components/schemas/OrderResponse'
         '400':
           description: invalid input
         '500':
           description: Unhandled error by server
 
+  /api/v1/customer-orders/{id}:
+    get:
+      summary: Get order by id .
+      operationId: getOrderById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "cf24d5ce-f7be-43e7-85fb-a70de8654dfc"
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '404':
+          description: Not found
+        '500':
+          description: Unhandled error by server
+
 components:
   schemas:
-    creteOrderRequest:
+    CreteOrderRequest:
       type: object
       description: contains currency exchange rate details
       properties:
@@ -55,6 +78,37 @@ components:
           format: date-time
           example: '2026-05-17T10:15:30+02:00'
 
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "40b044b9-01c8-4e5f-a484-8fbe3fe351de"
+        category:
+          type: string
+          example: "B2C"
+        customer:
+          $ref: '#/components/schemas/Customer'
+        site:
+          $ref: '#/components/schemas/Site'
+        state:
+          type: string
+          example: "DRAFT"
+        orderItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        paymentMethod:
+          $ref: '#/components/schemas/PaymentMethod'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2026-05-13T10:15:30+02:00"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2026-05-17T10:15:30+02:00"
+
     Customer:
       type: object
       description: contains customer details
@@ -76,7 +130,7 @@ components:
       properties:
         productOfferingId:
           type: string
-          example: 'PROD-30001'
+          example: 'PO-30001'
 
         quantity:
           type: integer

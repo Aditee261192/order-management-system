@@ -8,6 +8,7 @@ import com.codingchallenge.ordersystem.customerorder.order.dto.request.PaymentMe
 import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderResponse;
 import com.codingchallenge.ordersystem.customerorder.order.entity.*;
 import com.codingchallenge.ordersystem.customerorder.order.exception.ExistingOrderException;
+import com.codingchallenge.ordersystem.customerorder.order.exception.OrderNotFoundException;
 import com.codingchallenge.ordersystem.customerorder.order.external.api.productcatalog.exception.OrderProductValidationException;
 import com.codingchallenge.ordersystem.customerorder.order.external.api.productcatalog.service.ProductCatalogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.DuplicateFormatFlagsException;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +62,16 @@ public class DefaultOrderService implements OrderService {
         order = orderRepository.save(order);
 
         saveIdempotencyIfRequired(request, key, order);
+
+        return modelMapper.map(order, OrderResponse.class);
+    }
+
+    @Override
+    public OrderResponse getOrderById(String orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() ->
+                        new OrderNotFoundException("Order not found: " + orderId)
+                );
 
         return modelMapper.map(order, OrderResponse.class);
     }

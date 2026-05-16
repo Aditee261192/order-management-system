@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/customer-orders")
 @Tag(name = "Currency Exchange Rate API", description = "Exchange rate for EUR ")
 public class OrderController {
 
@@ -36,5 +36,17 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Get Oder details for given Id", description = "Get already persisted order for given id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product offering found"),
+            @ApiResponse(responseCode = "404", description = "Product offering not found")
+    })
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable String id) {
+
+        return
+                ResponseEntity.ok(orderService.getOrderById(id));
     }
 }
