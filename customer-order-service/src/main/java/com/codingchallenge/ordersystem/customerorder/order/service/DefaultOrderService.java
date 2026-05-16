@@ -4,6 +4,7 @@ import com.codingchallenge.ordersystem.customerorder.order.dao.OrderIdempotencyR
 import com.codingchallenge.ordersystem.customerorder.order.dao.OrderRepository;
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.CreateOrderRequest;
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderItemDto;
+import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderListResponse;
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.PaymentMethodDto;
 import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderResponse;
 import com.codingchallenge.ordersystem.customerorder.order.entity.*;
@@ -15,6 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,13 +81,36 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public List<OrderResponse> listOrders() {
-        return
-                orderRepository.findAll().stream()
-                        .map(offering ->
-                                modelMapper.map(offering, OrderResponse.class))
-                        .toList();
+    public OrderListResponse listOrders(int limit, int offset, String category) {
+        int page = offset / limit;
+
+        Pageable pageable = PageRequest.of(page, limit);
+
+        Page<Order> result;
+
+        if (category != null) {
+            Category categoryEnum = category != null ? Category.valueOf(category) : null;
+            result = orderRepository.findByCategory(
+                    categoryEnum,
+                    pageable
+            );
+        } else {
+            result = orderRepository.findAll(pageable);
+        }
+
+        List<OrderResponse> items = result.getContent()
+                .stream()
+                .map(order -> modelMapper.map(order, OrderResponse.class))
+                .toList();
+
+        return OrderListResponse.builder()
+                .items(items)
+                .total(result.getTotalElements())
+                .limit(limit)
+                .offset(offset)
+                .build();
     }
+
 
     private Order buildOrder(CreateOrderRequest request) {
 

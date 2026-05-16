@@ -23,23 +23,46 @@ paths:
           description: invalid input
         '500':
           description: Unhandled error by server
+
     get:
-      summary: Get list of all available orders.
+      summary: List orders
       operationId: listOrders
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                minItems: 0
-                items:
-                  $ref: '#/components/schemas/ProductOfferingResponse'
-        '404':
-          description: Not found.
-        '500':
-          description: Unhandled error by server
+      requestBody:
+        parameters:
+          - name: limit
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 20
+              example: 20
+            description: Number of records to return
+          - name: offset
+            in: query
+            required: false
+            schema:
+              type: integer
+              default: 0
+              example: 0
+            description: Starting position for pagination
+          - name: category
+            in: query
+            required: false
+            schema:
+              type: string
+              example: 'B2C'
+            description: Filter orders by category
+        responses:
+          "200":
+            description: Orders retrieved successfully
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/OrderListResponse'
+          "400":
+            description: Invalid request parameters
+          "500":
+            description: Internal server error
 
   /api/v1/customer-orders/{id}:
     get:
@@ -51,7 +74,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "cf24d5ce-f7be-43e7-85fb-a70de8654dfc"
+            example: 'cf24d5ce-f7be-43e7-85fb-a70de8654dfc'
       responses:
         '200':
           description: Successful operation
@@ -100,7 +123,7 @@ components:
       properties:
         id:
           type: string
-          example: "40b044b9-01c8-4e5f-a484-8fbe3fe351de"
+          example: '40b044b9-01c8-4e5f-a484-8fbe3fe351de'
         category:
           type: string
           example: "B2C"
@@ -125,6 +148,23 @@ components:
           type: string
           format: date-time
           example: "2026-05-17T10:15:30+02:00"
+
+    OrderListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+        total:
+          type: integer
+          example: 100
+        limit:
+          type: integer
+          example: 20
+        offset:
+          type: integer
+          example: 0
 
     Customer:
       type: object

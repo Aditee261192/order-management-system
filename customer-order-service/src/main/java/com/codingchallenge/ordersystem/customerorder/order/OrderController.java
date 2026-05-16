@@ -1,6 +1,7 @@
 package com.codingchallenge.ordersystem.customerorder.order;
 
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.CreateOrderRequest;
+import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderListResponse;
 import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderResponse;
 import com.codingchallenge.ordersystem.customerorder.order.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,10 +44,12 @@ public class OrderController {
     @GetMapping
     @Operation(summary = "List orders ", description = "Get already persisted orders.")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Orders retrieved successfully")})
-    public ResponseEntity<List<OrderResponse>> listOrders() {
-
-        return
-                ResponseEntity.ok(orderService.listOrders());
+    public ResponseEntity<OrderListResponse> listOrders(
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(required = false) String category
+    ) {
+        return ResponseEntity.ok(orderService.listOrders(limit, offset, category));
     }
 
     @GetMapping("/{id}")

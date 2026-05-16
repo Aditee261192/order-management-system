@@ -1,6 +1,7 @@
 package com.codingchallenge.ordersystem.customerorder.order.service;
 
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.CreateOrderRequest;
+import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderListResponse;
 import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderResponse;
 
 import java.util.List;
@@ -11,5 +12,5 @@ public interface OrderService {
 
     OrderResponse getOrderById(String orderID);
 
-    List<OrderResponse> listOrders();
+    OrderListResponse listOrders(int limit, int offset, String category);
 }
