@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController()
 @RequestMapping("/api/v1/customer-orders")
 @Tag(name = "Currency Exchange Rate API", description = "Exchange rate for EUR ")
@@ -38,8 +40,17 @@ public class OrderController {
                 .body(response);
     }
 
+    @GetMapping
+    @Operation(summary = "List orders ", description = "Get already persisted orders.")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Orders retrieved successfully")})
+    public ResponseEntity<List<OrderResponse>> listOrders() {
+
+        return
+                ResponseEntity.ok(orderService.listOrders());
+    }
+
     @GetMapping("/{id}")
-    @Operation(summary = "Get Oder details for given Id", description = "Get already persisted order for given id.")
+    @Operation(summary = "Get order details for given Id", description = "Get already persisted order for given id.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product offering found"),
             @ApiResponse(responseCode = "404", description = "Product offering not found")

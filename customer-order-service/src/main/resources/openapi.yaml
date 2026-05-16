@@ -23,6 +23,23 @@ paths:
           description: invalid input
         '500':
           description: Unhandled error by server
+    get:
+      summary: Get list of all available orders.
+      operationId: listOrders
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                minItems: 0
+                items:
+                  $ref: '#/components/schemas/ProductOfferingResponse'
+        '404':
+          description: Not found.
+        '500':
+          description: Unhandled error by server
 
   /api/v1/customer-orders/{id}:
     get:

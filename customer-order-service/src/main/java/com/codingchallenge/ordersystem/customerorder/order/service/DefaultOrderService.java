@@ -76,6 +76,15 @@ public class DefaultOrderService implements OrderService {
         return modelMapper.map(order, OrderResponse.class);
     }
 
+    @Override
+    public List<OrderResponse> listOrders() {
+        return
+                orderRepository.findAll().stream()
+                        .map(offering ->
+                                modelMapper.map(offering, OrderResponse.class))
+                        .toList();
+    }
+
     private Order buildOrder(CreateOrderRequest request) {
 
         Order order = Order.builder()
