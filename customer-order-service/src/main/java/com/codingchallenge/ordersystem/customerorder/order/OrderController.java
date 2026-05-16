@@ -1,8 +1,11 @@
 package com.codingchallenge.ordersystem.customerorder.order;
 
-import com.codingchallenge.ordersystem.customerorder.order.dto.CreateOrderRequest;
-import com.codingchallenge.ordersystem.customerorder.order.dto.OrderResponse;
+import com.codingchallenge.ordersystem.customerorder.order.dto.request.CreateOrderRequest;
+import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderResponse;
 import com.codingchallenge.ordersystem.customerorder.order.service.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class OrderController {
     }
 
     @PostMapping
+    @Operation(summary = "Creates Order.", description = "Created Order")
+    @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Order created.")})
     public ResponseEntity<OrderResponse> createOrder(@RequestHeader(value = "Idempotency-Key", required = false)
                                                      String idempotencyKey, @Valid @RequestBody CreateOrderRequest request) {
         OrderResponse response =

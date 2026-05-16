@@ -24,53 +24,6 @@ paths:
         '500':
           description: Unhandled error by server
 
-
-  /api/v1/conversion-rates:
-    get:
-      summary: Get list of all available conversion rates
-      operationId: getConversionRates
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                minItems: 0
-                items:
-                  $ref: '#/components/schemas/CurrencyConversionRateResponse'
-        '404':
-          description: not found
-        '500':
-          description: Unhandled error by server
-
-  /api/v1/conversion-rates/date/{date}:
-    get:
-      summary: Get list of all available conversion rates for given date.
-      operationId: getConversionRatesByDate
-      parameters:
-        - name: date
-          in: path
-          required: true
-          schema:
-            type: string
-            format: date
-            example: "2026-01-22"
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                minItems: 0
-                items:
-                  $ref: '#/components/schemas/CurrencyConversionRateResponse'
-        '404':
-          description: not found
-        '500':
-          description: Unhandled error by server
-
 components:
   schemas:
     creteOrderRequest:

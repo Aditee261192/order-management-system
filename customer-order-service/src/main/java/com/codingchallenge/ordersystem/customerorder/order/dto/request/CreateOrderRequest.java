@@ -1,13 +1,12 @@
-package com.codingchallenge.ordersystem.customerorder.order.dto;
+package com.codingchallenge.ordersystem.customerorder.order.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import jakarta.validation.constraints.NotNull;
 
 @Getter
 @Setter

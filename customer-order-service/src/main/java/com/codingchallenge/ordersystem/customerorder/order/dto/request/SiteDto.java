@@ -1,4 +1,4 @@
-package com.codingchallenge.ordersystem.customerorder.order.dto;
+package com.codingchallenge.ordersystem.customerorder.order.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;

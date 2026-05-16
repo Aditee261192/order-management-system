@@ -1,0 +1,24 @@
+package com.codingchallenge.ordersystem.customerorder.order.external.api.productcatalog.config;
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.client.WebClient;
+
+@Configuration
+public class WebClientConfig {
+
+    @Bean
+    public WebClient productWebClient(WebClient.Builder builder,
+                                      String productServiceBaseUrl) {
+
+        return builder
+                .baseUrl(productServiceBaseUrl)
+                .build();
+    }
+
+    @Bean
+    public String productServiceBaseUrl() {
+        return "http://product-service";
+    }
+}
