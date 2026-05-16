@@ -13,22 +13,22 @@ import jakarta.validation.constraints.NotNull;
 @Setter
 public class CreateOrderRequest {
 
-    @NotNull
+    @NotNull(message = "Category is required")
     private String category;
 
-    @NotNull
+    @NotNull(message = "Customer is required")
     @Valid
     private CustomerDto customer;
 
-    @NotNull
+    @NotNull(message = "Site is required")
     @Valid
     private SiteDto site;
 
-    @NotEmpty
+    @NotEmpty(message = "Order items must not be empty")
     @Valid
     private List<OrderItemDto> orderItems;
 
-    @NotNull
+    @NotNull(message = "Payment method is required")
     @Valid
     private PaymentMethodDto paymentMethod;
 
