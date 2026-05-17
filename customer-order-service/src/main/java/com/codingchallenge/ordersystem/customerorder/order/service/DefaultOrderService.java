@@ -30,6 +30,7 @@ public class DefaultOrderService implements OrderService {
     private final IdempotencyService idempotencyService;
     private final ProductValidationService productValidationService;
 
+
     public DefaultOrderService(
             OrderRepository orderRepository,
             ModelMapper modelMapper,
@@ -37,7 +38,8 @@ public class DefaultOrderService implements OrderService {
             OrderStateMachine orderStateMachine,
             OrderItemService orderItemService,
             IdempotencyService idempotencyService,
-            ProductValidationService productValidationService
+            ProductValidationService productValidationService,
+            ProductCatalogClient productCatalogClient
     ) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;

@@ -13,14 +13,14 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class ProductValidationService {
 
-    private final ProductCatalogService productCatalogService;
+
+    private final ProductCatalogClient productCatalogClient;
     private final Executor executor;
 
-    public ProductValidationService(
-            ProductCatalogService productCatalogService,
+    public ProductValidationService(ProductCatalogClient productCatalogClient,
             Executor executor
     ) {
-        this.productCatalogService = productCatalogService;
+        this.productCatalogClient = productCatalogClient;
         this.executor = executor;
     }
 
@@ -28,7 +28,7 @@ public class ProductValidationService {
 
         List<CompletableFuture<Boolean>> futures = items.stream()
                 .map(item -> CompletableFuture.supplyAsync(
-                        () -> productCatalogService.productOfferingExists(item.getProductOfferingId()),
+                        () -> productCatalogClient.isProductValid(item.getProductOfferingId()),
                         executor
                 ))
                 .toList();
@@ -40,6 +40,7 @@ public class ProductValidationService {
                 if (!Boolean.TRUE.equals(exists)) {
                     throw new OrderProductValidationException("One or more products are invalid");
                 }
+
 
             } catch (Exception ex) {
                 throw new OrderProductValidationException("Product validation failed");
