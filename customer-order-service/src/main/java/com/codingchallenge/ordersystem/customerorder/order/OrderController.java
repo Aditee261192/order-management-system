@@ -4,6 +4,7 @@ import com.codingchallenge.ordersystem.customerorder.order.dto.request.CreateOrd
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderListResponse;
 import com.codingchallenge.ordersystem.customerorder.order.dto.response.OrderResponse;
 import com.codingchallenge.ordersystem.customerorder.order.service.OrderService;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController()
 @RequestMapping("/api/v1/customer-orders")
@@ -55,12 +57,25 @@ public class OrderController {
     @GetMapping("/{id}")
     @Operation(summary = "Get order details for given Id", description = "Get already persisted order for given id.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Product offering found"),
-            @ApiResponse(responseCode = "404", description = "Product offering not found")
+            @ApiResponse(responseCode = "200", description = "Order found"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
     })
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable String id) {
 
         return
                 ResponseEntity.ok(orderService.getOrderById(id));
+    }
+
+    @PatchMapping("/orders/{id}")
+    @Operation(summary = "Update Order", description = "Update already persisted order by id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order found"),
+            @ApiResponse(responseCode = "404", description = "Order not found")
+    })
+    public ResponseEntity<OrderResponse> patchOrder(
+            @PathVariable String id,
+            @RequestBody JsonNode patch
+    ) {
+        return ResponseEntity.ok(orderService.patchOrder(id, patch));
     }
 }
