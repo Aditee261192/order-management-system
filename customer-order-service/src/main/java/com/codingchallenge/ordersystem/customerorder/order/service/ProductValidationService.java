@@ -46,18 +46,4 @@ public class ProductValidationService {
             }
         }
     }
-
-    public void validateSingleProduct(String productId) {
-
-        try {
-            boolean exists = productCatalogService.productOfferingExists(productId);
-
-            if (!exists) {
-                throw new OrderProductValidationException("Invalid product: " + productId);
-            }
-
-        } catch (Exception ex) {
-            throw new OrderProductValidationException("Product validation failed: " + productId);
-        }
-    }
 }

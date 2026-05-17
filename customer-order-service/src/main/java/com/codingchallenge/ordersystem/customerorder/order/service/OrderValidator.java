@@ -25,7 +25,6 @@ public class OrderValidator {
             throw new OrderStateTransitionException("Customer and Site are required");
         }
 
-        // category validation
         Category.valueOf(request.getCategory());
     }
 
