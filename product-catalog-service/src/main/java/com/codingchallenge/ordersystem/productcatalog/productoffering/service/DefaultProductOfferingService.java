@@ -4,6 +4,7 @@ import com.codingchallenge.ordersystem.model.CreateProductOfferingRequest;
 import com.codingchallenge.ordersystem.model.ProductOfferingResponse;
 import com.codingchallenge.ordersystem.productcatalog.productoffering.dao.ProductOfferingRepository;
 import com.codingchallenge.ordersystem.productcatalog.productoffering.entity.ProductOffering;
+import com.codingchallenge.ordersystem.productcatalog.productoffering.exception.InvalidProductOfferingException;
 import com.codingchallenge.ordersystem.productcatalog.productoffering.exception.ProductOfferingNotFound;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.PropertyAccessException;
@@ -29,11 +30,12 @@ public class DefaultProductOfferingService implements ProductOfferingService {
     @Override
     public ProductOfferingResponse createProductOfferings(CreateProductOfferingRequest createProductOfferingRequest) {
 
-        ProductOffering productOffering=ProductOffering.builder()
-                        .name(createProductOfferingRequest.getName())
-                        .price(createProductOfferingRequest.getPrice())
-                        .build();
-        productOffering=productOfferingRepository.save(productOffering);
+        validateCreateRequest(createProductOfferingRequest);
+        ProductOffering productOffering = ProductOffering.builder()
+                .name(createProductOfferingRequest.getName())
+                .price(createProductOfferingRequest.getPrice())
+                .build();
+        productOffering = productOfferingRepository.save(productOffering);
 
         return modelMapper.map(productOffering, ProductOfferingResponse.class);
     }
@@ -52,15 +54,33 @@ public class DefaultProductOfferingService implements ProductOfferingService {
     @Override
     public ProductOfferingResponse getProductOfferingResponseById(String id) {
 
+        validateId(id);
 
-         return Optional.ofNullable(
-                        productOfferingRepository.findById(id)
-                )
-                .map(offering -> modelMapper.map(offering,ProductOfferingResponse.class))
-                .orElseThrow(() -> new ProductOfferingNotFound("Product Offering not found.")
-                );
+        ProductOffering productOffering = productOfferingRepository.findById(id)
+                .orElseThrow(() ->
+                        new ProductOfferingNotFound("Product Offering not found with id: " + id));
+        return modelMapper.map(productOffering,ProductOfferingResponse.class);
+    }
 
+    private void validateCreateRequest(CreateProductOfferingRequest request) {
 
+        if (request == null) {
+            throw new InvalidProductOfferingException("Request cannot be null");
+        }
+        if (request.getName() == null || request.getName().isBlank()) {
 
+            throw new InvalidProductOfferingException("Product offering name is required");
+        }
+        if (request.getPrice() == null || request.getPrice().doubleValue() < 0) {
+
+            throw new InvalidProductOfferingException("Price must be greater than or equal to 0");
+        }
+    }
+
+    private void validateId(String id) {
+
+        if (id == null || id.isBlank()) {
+            throw new InvalidProductOfferingException("Product offering id cannot be null or empty");
+        }
     }
 }

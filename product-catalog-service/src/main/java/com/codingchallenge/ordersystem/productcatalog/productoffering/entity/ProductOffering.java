@@ -1,6 +1,7 @@
 package com.codingchallenge.ordersystem.productcatalog.productoffering.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +27,6 @@ public class ProductOffering {
     private String name;
 
     @Column(name = "price")
+    @Min(0)
     private double price;
 }

@@ -78,6 +78,7 @@ components:
           type: number
           format: double
           example : 22.00
+          minimum: 0
       required:
         - name
         - price

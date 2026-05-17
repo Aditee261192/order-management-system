@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +60,7 @@ public class ProductOfferingController {
             @ApiResponse(responseCode = "200", description = "Product offering found"),
             @ApiResponse(responseCode = "404", description = "Product offering not found")
     })
-    public ResponseEntity<ProductOfferingResponse> getProductOfferingResponseById(@PathVariable String id) {
+    public ResponseEntity<ProductOfferingResponse> getProductOfferingResponseById(@PathVariable @NotBlank String id) {
 
         return
                 ResponseEntity.ok(productOfferingService.getProductOfferingResponseById(id));
