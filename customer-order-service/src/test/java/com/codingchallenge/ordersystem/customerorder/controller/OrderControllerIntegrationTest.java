@@ -50,8 +50,6 @@ public class OrderControllerIntegrationTest {
                 .thenReturn(true);
     }
 
-    // -------------------- CREATE ORDER --------------------
-
     @Test
     void should_create_order_successfully() throws Exception {
 
@@ -64,7 +62,6 @@ public class OrderControllerIntegrationTest {
                 .andExpect(status().isCreated());
     }
 
-    // -------------------- GET ORDER --------------------
 
     @Test
     void should_return_not_found_when_order_not_exists() throws Exception {
@@ -73,7 +70,6 @@ public class OrderControllerIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
-    // -------------------- LIST ORDERS --------------------
 
     @Test
     void should_list_orders_successfully() throws Exception {
@@ -84,7 +80,7 @@ public class OrderControllerIntegrationTest {
                 .andExpect(status().isOk());
     }
 
-    // -------------------- VALIDATION TESTS --------------------
+
 
     @Test
     void should_return_bad_request_when_category_missing() throws Exception {
@@ -164,8 +160,6 @@ public class OrderControllerIntegrationTest {
                 .andExpect(status().isBadRequest());
     }
 
-    // -------------------- IDEMPOTENCY TEST --------------------
-
     @Test
     void should_handle_idempotent_requests() throws Exception {
 
@@ -187,8 +181,6 @@ public class OrderControllerIntegrationTest {
         verify(productValidationService, times(1))
                 .validateProducts(anyList());
     }
-
-    // -------------------- TEST DATA BUILDER --------------------
 
     private CreateOrderRequest createValidOrderRequest() {
 

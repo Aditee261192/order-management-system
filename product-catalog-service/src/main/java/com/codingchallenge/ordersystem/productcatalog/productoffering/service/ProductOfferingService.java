@@ -4,7 +4,6 @@ import com.codingchallenge.ordersystem.model.CreateProductOfferingRequest;
 import com.codingchallenge.ordersystem.model.ProductOfferingResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductOfferingService {
 

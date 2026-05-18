@@ -4,7 +4,6 @@ import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderItem
 import com.codingchallenge.ordersystem.customerorder.order.exception.InvalidProductIdException;
 import com.codingchallenge.ordersystem.customerorder.order.exception.OrderProductValidationException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -41,8 +40,8 @@ public class ProductValidationService {
                 if (!Boolean.TRUE.equals(exists)) {
                     throw new OrderProductValidationException("One or more products are invalid");
                 }
-            }catch (Exception ex) {
-               throw new InvalidProductIdException("Product Offering id is not available ");
+            } catch (Exception ex) {
+                throw new InvalidProductIdException("Product Offering id is not available ");
             }
         }
     }

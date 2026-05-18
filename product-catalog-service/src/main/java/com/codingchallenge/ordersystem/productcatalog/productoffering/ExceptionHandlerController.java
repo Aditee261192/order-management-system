@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class ExceptionHandlerController extends ResponseEntityExceptionHandler  {
+public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({ProductOfferingNotFound.class})
     public ResponseEntity<Object> handleRuntimeException(

@@ -15,12 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Map;
-
 @RestController()
 @RequestMapping("/api/v1/customer-orders")
-@Tag(name = "Currency Exchange Rate API", description = "Exchange rate for EUR ")
+@Tag(name = "Order Management API", description = "APIs for managing customer orders")
 public class OrderController {
 
     private final OrderService orderService;
@@ -45,7 +42,7 @@ public class OrderController {
 
     @GetMapping
     @Operation(summary = "List orders ", description = "Get already persisted orders.")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Orders retrieved successfully")})
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Orders retrieved successfully")})
     public ResponseEntity<OrderListResponse> listOrders(
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(defaultValue = "0") int offset,

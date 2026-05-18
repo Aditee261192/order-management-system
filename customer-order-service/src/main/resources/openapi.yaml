@@ -91,7 +91,7 @@ components:
   schemas:
     CreteOrderRequest:
       type: object
-      description: contains currency exchange rate details
+      description: contains order details fro creating order
       properties:
         id:
           type: string

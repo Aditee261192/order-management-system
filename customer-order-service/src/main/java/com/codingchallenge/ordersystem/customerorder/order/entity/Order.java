@@ -53,7 +53,8 @@ public class Order {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems = new ArrayList<>();;
+    private List<OrderItem> orderItems = new ArrayList<>();
+    ;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private PaymentMethod paymentMethod;
@@ -62,7 +63,6 @@ public class Order {
         this.paymentMethod = paymentMethod;
         paymentMethod.setOrder(this);
     }
-
 
 
 }

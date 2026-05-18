@@ -128,7 +128,7 @@ class OrderProductCatalogIntegrationTest {
 
         when(productCatalogService.productOfferingExists(anyString()))
                 .thenAnswer(invocation -> {
-                    Thread.sleep(3000); // simulate delay
+                    Thread.sleep(3000);
                     return true;
                 });
 

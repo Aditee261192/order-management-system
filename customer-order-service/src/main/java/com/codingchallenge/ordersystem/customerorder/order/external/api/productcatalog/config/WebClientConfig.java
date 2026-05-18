@@ -17,8 +17,4 @@ public class WebClientConfig {
                 .build();
     }
 
-    @Bean
-    public String productServiceBaseUrl() {
-        return "http://product-service";
-    }
 }
