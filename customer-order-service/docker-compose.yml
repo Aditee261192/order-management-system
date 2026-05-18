@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+
+  orderdb-postgres:
+    image: postgres:15
+    container_name: orderdb-postgres
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - order-network
+    volumes:
+      - orderdb_data:/var/lib/postgresql/data
+
+  customer-order-service:
+    build: .
+    container_name: customer-order-service
+    depends_on:
+      - orderdb-postgres
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://orderdb-postgres:5432/orderdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      PRODUCT_SERVICE_URL: http://product-service:8081
+    networks:
+      - order-network
+
+networks:
+  order-network:
+
+volumes:
+  orderdb_data:

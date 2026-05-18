@@ -38,8 +38,7 @@ public class DefaultOrderService implements OrderService {
             OrderStateMachine orderStateMachine,
             OrderItemService orderItemService,
             IdempotencyService idempotencyService,
-            ProductValidationService productValidationService,
-            ProductCatalogClient productCatalogClient
+            ProductValidationService productValidationService
     ) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;

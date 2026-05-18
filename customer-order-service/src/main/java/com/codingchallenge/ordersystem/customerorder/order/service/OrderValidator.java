@@ -25,7 +25,11 @@ public class OrderValidator {
             throw new OrderStateTransitionException("Customer and Site are required");
         }
 
-        Category.valueOf(request.getCategory());
+        try {
+            Category.valueOf(request.getCategory());
+        } catch (IllegalArgumentException ex) {
+            throw new OrderStateTransitionException("Invalid category: " + request.getCategory());
+        }
     }
 
     public void validatePatchRequest(Order order, JsonNode patch) {
