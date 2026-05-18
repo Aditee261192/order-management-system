@@ -14,6 +14,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,10 +37,10 @@ class DefaultProductOfferingServiceTest {
     @Test
     void should_create_product_offering_successfully() {
 
-        CreateProductOfferingRequest request = createRequest("Laptop", 1000.0);
+        CreateProductOfferingRequest request = createRequest("Laptop", BigDecimal.valueOf(1000.0));
 
-        ProductOffering savedEntity = createEntity("Laptop", 1000.0);
-        ProductOfferingResponse response = createResponse("Laptop", 1000.0);
+        ProductOffering savedEntity = createEntity("Laptop", BigDecimal.valueOf(1000.0));
+        ProductOfferingResponse response = createResponse("Laptop", BigDecimal.valueOf(1000.0));
 
         when(productOfferingRepository.save(Mockito.any(ProductOffering.class)))
                 .thenReturn(savedEntity);
@@ -52,7 +54,7 @@ class DefaultProductOfferingServiceTest {
 
         assertNotNull(result);
         assertEquals("Laptop", result.getName());
-        assertEquals(1000.0, result.getPrice());
+        assertEquals(BigDecimal.valueOf(1000.0), result.getPrice());
 
         verify(productOfferingRepository, times(1)).save(Mockito.any());
     }
@@ -73,7 +75,7 @@ class DefaultProductOfferingServiceTest {
     @Test
     void should_throw_exception_when_name_is_blank() {
 
-        CreateProductOfferingRequest request = createRequest(" ", 1000.0);
+        CreateProductOfferingRequest request = createRequest(" ", BigDecimal.valueOf(1000.0));
 
         DefaultProductOfferingService service = createService();
 
@@ -88,7 +90,7 @@ class DefaultProductOfferingServiceTest {
     @Test
     void should_throw_exception_when_price_is_negative() {
 
-        CreateProductOfferingRequest request = createRequest("Laptop", -10.0);
+        CreateProductOfferingRequest request = createRequest("Laptop", BigDecimal.valueOf(-10.0));
 
         DefaultProductOfferingService service = createService();
 
@@ -103,8 +105,8 @@ class DefaultProductOfferingServiceTest {
     @Test
     void should_return_product_offering_by_id() {
 
-        ProductOffering entity = createEntity("Laptop", 1000.0);
-        ProductOfferingResponse response = createResponse("Laptop", 1000.0);
+        ProductOffering entity = createEntity("Laptop", BigDecimal.valueOf(1000.0));
+        ProductOfferingResponse response = createResponse("Laptop", BigDecimal.valueOf(1000.0));
 
         when(productOfferingRepository.findById("1"))
                 .thenReturn(Optional.of(entity));
@@ -142,21 +144,21 @@ class DefaultProductOfferingServiceTest {
     }
 
 
-    private CreateProductOfferingRequest createRequest(String name, Double price) {
+    private CreateProductOfferingRequest createRequest(String name, BigDecimal price) {
         CreateProductOfferingRequest request = new CreateProductOfferingRequest();
         request.setName(name);
         request.setPrice(price);
         return request;
     }
 
-    private ProductOffering createEntity(String name, Double price) {
+    private ProductOffering createEntity(String name, BigDecimal price) {
         return ProductOffering.builder()
                 .name(name)
                 .price(price)
                 .build();
     }
 
-    private ProductOfferingResponse createResponse(String name, Double price) {
+    private ProductOfferingResponse createResponse(String name, BigDecimal price) {
         ProductOfferingResponse response = new ProductOfferingResponse();
         response.setName(name);
         response.setPrice(price);

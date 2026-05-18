@@ -7,12 +7,11 @@ import com.codingchallenge.ordersystem.productcatalog.productoffering.entity.Pro
 import com.codingchallenge.ordersystem.productcatalog.productoffering.exception.InvalidProductOfferingException;
 import com.codingchallenge.ordersystem.productcatalog.productoffering.exception.ProductOfferingNotFound;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.PropertyAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DefaultProductOfferingService implements ProductOfferingService {
@@ -59,7 +58,7 @@ public class DefaultProductOfferingService implements ProductOfferingService {
         ProductOffering productOffering = productOfferingRepository.findById(id)
                 .orElseThrow(() ->
                         new ProductOfferingNotFound("Product Offering not found with id: " + id));
-        return modelMapper.map(productOffering,ProductOfferingResponse.class);
+        return modelMapper.map(productOffering, ProductOfferingResponse.class);
     }
 
     private void validateCreateRequest(CreateProductOfferingRequest request) {
@@ -71,7 +70,7 @@ public class DefaultProductOfferingService implements ProductOfferingService {
 
             throw new InvalidProductOfferingException("Product offering name is required");
         }
-        if (request.getPrice() == null || request.getPrice().doubleValue() < 0) {
+        if (request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) < 0) {
 
             throw new InvalidProductOfferingException("Price must be greater than or equal to 0");
         }

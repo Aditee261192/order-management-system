@@ -1,9 +1,10 @@
 package com.codingchallenge.ordersystem.customerorder.order.service;
 
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderItemDto;
-import com.codingchallenge.ordersystem.customerorder.order.external.api.productcatalog.service.ProductCatalogService;
+import com.codingchallenge.ordersystem.customerorder.order.exception.InvalidProductIdException;
 import com.codingchallenge.ordersystem.customerorder.order.exception.OrderProductValidationException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +19,7 @@ public class ProductValidationService {
     private final Executor executor;
 
     public ProductValidationService(ProductCatalogClient productCatalogClient,
-            Executor executor
+                                    Executor executor
     ) {
         this.productCatalogClient = productCatalogClient;
         this.executor = executor;
@@ -35,15 +36,13 @@ public class ProductValidationService {
 
         for (CompletableFuture<Boolean> future : futures) {
             try {
-                Boolean exists = future.get(3, TimeUnit.SECONDS);
+                Boolean exists = future.get(10, TimeUnit.SECONDS);
 
                 if (!Boolean.TRUE.equals(exists)) {
                     throw new OrderProductValidationException("One or more products are invalid");
                 }
-
-
-            } catch (Exception ex) {
-                throw new OrderProductValidationException("Product validation failed");
+            }catch (Exception ex) {
+               throw new InvalidProductIdException("Product Offering id is not available ");
             }
         }
     }

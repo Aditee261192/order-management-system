@@ -74,6 +74,16 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler({InvalidProductIdException.class})
+    public ResponseEntity<Object> handleRuntimeException(
+            InvalidProductIdException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleRuntimeException(
             Exception ex) {

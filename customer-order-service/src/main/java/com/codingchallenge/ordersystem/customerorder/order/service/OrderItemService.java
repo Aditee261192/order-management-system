@@ -3,10 +3,12 @@ package com.codingchallenge.ordersystem.customerorder.order.service;
 import com.codingchallenge.ordersystem.customerorder.order.dto.request.OrderItemDto;
 import com.codingchallenge.ordersystem.customerorder.order.entity.Order;
 import com.codingchallenge.ordersystem.customerorder.order.entity.OrderItem;
-import com.codingchallenge.ordersystem.customerorder.order.external.api.productcatalog.service.ProductCatalogService;
+import com.codingchallenge.ordersystem.customerorder.order.exception.InvalidProductIdException;
 import com.codingchallenge.ordersystem.customerorder.order.exception.OrderProductValidationException;
+import com.codingchallenge.ordersystem.customerorder.order.external.api.productcatalog.service.ProductCatalogService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,9 +82,9 @@ public class OrderItemService {
                 throw new OrderProductValidationException("Invalid product: " + productId);
             }
 
-        } catch (Exception ex) {
-            throw new OrderProductValidationException(
-                    "Product validation failed: " + productId
+        } catch (WebClientResponseException ex) {
+            throw new InvalidProductIdException(
+                    "Product service error for productId: " + productId
             );
         }
     }

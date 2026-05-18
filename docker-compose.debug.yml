@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+
+  customer-order-service:
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"

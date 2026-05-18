@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -28,5 +30,5 @@ public class ProductOffering {
 
     @Column(name = "price")
     @Min(0)
-    private double price;
+    private BigDecimal price;
 }

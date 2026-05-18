@@ -43,8 +43,8 @@ class ProductOfferingControllerIntegrationTest {
     @Test
     void should_create_product_offering_successfully() throws Exception {
 
-        CreateProductOfferingRequest request = createRequest("Laptop", 1000.0);
-        ProductOfferingResponse response = createResponse("Laptop", 1000.0);
+        CreateProductOfferingRequest request = createRequest("Laptop", BigDecimal.valueOf(1000.0));
+        ProductOfferingResponse response = createResponse("Laptop", BigDecimal.valueOf(1000.0));
 
         when(productOfferingService.createProductOfferings(any()))
                 .thenReturn(response);
@@ -63,7 +63,7 @@ class ProductOfferingControllerIntegrationTest {
     @Test
     void should_return_bad_request_when_name_missing() throws Exception {
 
-        String request = createJsonRequest(null, 1000.0);
+        String request = createJsonRequest(null, BigDecimal.valueOf(1000.0));
 
         mockMvc.perform(post("/api/v1/product-offerings")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -95,7 +95,7 @@ class ProductOfferingControllerIntegrationTest {
     @Test
     void should_get_product_by_id_successfully() throws Exception {
 
-        ProductOfferingResponse response = createResponse("Phone", 500.0);
+        ProductOfferingResponse response = createResponse("Phone", BigDecimal.valueOf(500.0));
 
         when(productOfferingService.getProductOfferingResponseById("1"))
                 .thenReturn(response);
@@ -136,8 +136,8 @@ class ProductOfferingControllerIntegrationTest {
     @Test
     void should_get_all_product_offerings() throws Exception {
 
-        ProductOfferingResponse p1 = createResponse("Laptop", 1000.0);
-        ProductOfferingResponse p2 = createResponse("Phone", 500.0);
+        ProductOfferingResponse p1 = createResponse("Laptop", BigDecimal.valueOf(1000.0));
+        ProductOfferingResponse p2 = createResponse("Phone", BigDecimal.valueOf(500.0));
 
         when(productOfferingService.getAllProductOfferings())
                 .thenReturn(List.of(p1, p2));
@@ -167,7 +167,7 @@ class ProductOfferingControllerIntegrationTest {
         when(productOfferingService.createProductOfferings(any()))
                 .thenThrow(new InvalidProductOfferingException("invalid"));
 
-        CreateProductOfferingRequest request = createRequest("", 100.0);
+        CreateProductOfferingRequest request = createRequest("", BigDecimal.valueOf(100.0));
 
         mockMvc.perform(post("/api/v1/product-offerings")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -184,21 +184,21 @@ class ProductOfferingControllerIntegrationTest {
     }
 
 
-    private CreateProductOfferingRequest createRequest(String name, Double price) {
+    private CreateProductOfferingRequest createRequest(String name, BigDecimal price) {
         CreateProductOfferingRequest request = new CreateProductOfferingRequest();
         request.setName(name);
         request.setPrice(price);
         return request;
     }
 
-    private ProductOfferingResponse createResponse(String name, Double price) {
+    private ProductOfferingResponse createResponse(String name, BigDecimal price) {
         ProductOfferingResponse response = new ProductOfferingResponse();
         response.setName(name);
         response.setPrice(price);
         return response;
     }
 
-    private String createJsonRequest(String name, Double price) throws Exception {
+    private String createJsonRequest(String name, BigDecimal price) throws Exception {
         CreateProductOfferingRequest request = createRequest(name, price);
         return objectMapper.writeValueAsString(request);
     }

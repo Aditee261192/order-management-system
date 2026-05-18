@@ -27,7 +27,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://orderdb-postgres:5432/orderdb
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-      PRODUCT_SERVICE_URL: http://product-service:8081
+      PRODUCT_SERVICE_URL: http://product-catalog-service:8081
     networks:
       - order-network
 

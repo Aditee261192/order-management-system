@@ -76,7 +76,7 @@ components:
           example: 'Discount'
         price:
           type: number
-          format: double
+          format: bigdecimal
           example : 22.00
           minimum: 0
       required:
@@ -95,6 +95,6 @@ components:
           example: 'Discount'
         price:
           type: number
-          format: double
+          format: bigdecimal
           example: 22.00
 
